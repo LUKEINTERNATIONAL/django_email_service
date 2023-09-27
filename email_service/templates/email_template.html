@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ subject }}</title>
+    <style>
+        /* Add your CSS styles for the footer here */
+        .footer {
+            background-color: #00243c;
+            padding: 5px;
+            text-align: center;
+            font-size: 14px;
+            color: #ffffff;
+            margin-left: 20%;
+            margin-right: 20%;
+            border-radius: 0 0 10px 10px;
+        }
+        .footer img {
+            width: auto; /* Adjust the width as needed */
+            height: 50px; /* Maintain aspect ratio */
+        }
+
+        .footer p {
+            margin: 0;
+        }
+
+        .content {
+            text-align: center;
+            color: #332;
+            background-color: #f4f4f4;
+            padding: 20px;
+            margin-left: 20%;
+            margin-right: 20%;
+            border-radius: 10px 10px 0 0;
+        }
+
+        /* Center the content horizontally and vertically */
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Make sure the content takes up the entire viewport height */
+            margin: 0;
+        }
+
+        /* Remove margin from h1 and p inside .content */
+        .content h1,
+        .content p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+     <!-- content Section -->
+    <div class="content">
+        <h1>{{ subject }}</h1>
+        <p>{{ message }}</p>
+    </div>
+    
+    <!-- Footer Section -->
+    <div class="footer">
+        <img src="https://imageupload.io/ib/k1hpML5mar02EwP_1695802192.png" alt="LIN.png" alt="LIN Logo">
+        <p>&copy; {{ year }} Luke International (LIN). CONGOMA number: C 449/2009.</p>
+    </div>
+</body>
+</html>
