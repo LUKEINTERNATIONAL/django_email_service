@@ -24,7 +24,7 @@
         }
 
         .content {
-            text-align: center;
+            text-align: left;
             color: #332;
             background-color: #f4f4f4;
             padding: 20px;
@@ -44,9 +44,14 @@
         }
 
         /* Remove margin from h1 and p inside .content */
-        .content h1,
-        .content p {
+        .content h2,
+        .content h3 {
             margin: 0;
+
+        }
+        .msg_body {
+            font-size: 14px;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -54,8 +59,8 @@
 
      <!-- content Section -->
     <div class="content">
-        <h1>{{ subject }}</h1>
-        <p>{{ message }}</p>
+        <h2>{{ subject }}</h2>
+        <pre class="msg_body">{{ message }}</pre>
     </div>
     
     <!-- Footer Section -->

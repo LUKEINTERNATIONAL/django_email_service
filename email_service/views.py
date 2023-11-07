@@ -2,7 +2,7 @@ from django.core.mail import send_mail, EmailMessage
 from django.http import JsonResponse
 from django.template import loader
 from rest_framework.views import APIView
-import datetime  # Add this import
+import datetime
 
 class ContactView(APIView):
     
