@@ -9,7 +9,7 @@ class ContactView(APIView):
     def post(self, request):
         subject = request.data.get('subject')
         message = request.data.get('message')
-        from_email = 'dominickasanga@gmail.com'
+        from_email = 'tams@linmalawi.org'
         recipient_email = request.data.get('recipient_email')
         
         if not subject or not message or not recipient_email:
