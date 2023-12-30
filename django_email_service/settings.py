@@ -27,7 +27,12 @@ SECRET_KEY = 'django-insecure-w=rx@n#16(3i)%!u)66$ukf!)$vf!2!&%l8hfe9&45=s0j()a7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.11.92', '10.40.30.12', '0.0.0.0', '192.168.11.12']
+# settings.py
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+ALLOWED_HOSTS = ['localhost','192.168.11.92', '10.40.30.12', '0.0.0.0', '192.168.11.12']
 
 
 # Application definition
@@ -40,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
     'email_service'
 ]
 

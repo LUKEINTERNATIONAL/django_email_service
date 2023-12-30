@@ -17,10 +17,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from .views import CustomAuthToken
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('email_service/', include('email_service.urls')),
+    path('email_service/token/auth', CustomAuthToken.as_view()),
+    # path('users/create', CreateUserView.as_view()),
+    # path('users/change-password/', ChangePasswordView.as_view(), name='change-password'),
 ]
 
 # Add the following line for serving media files in development
