@@ -3,9 +3,17 @@ from django.http import JsonResponse
 from django.template import loader
 from rest_framework.views import APIView
 import datetime
+from .models import Sentemails
+from rest_framework import authentication, permissions
+from rest_framework.pagination import PageNumberPagination
+from .serializers import SentemailsSerializer
+
+class CustomPagination(PageNumberPagination):
+    page_size = 10  # Number of items per page
+    page_size_query_param = 'page_size'  # Query parameter to override page size
+    max_page_size = 100  # Maximum page size allowed
 
 class ContactView(APIView):
-    
     def post(self, request):
         subject = request.data.get('subject')
         message = request.data.get('message')
@@ -34,9 +42,37 @@ class ContactView(APIView):
             email.content_subtype = "html"  # Set the content type to HTML
             email.send()
             
+            sentemail = Sentemails()
+            sentemail.subject = request.data.get('subject')
+            sentemail.recipient_email =  request.data.get('recipient_email')
+            sentemail.save()
+            
             response_data = {'message': 'Email sent successfully'}
             return JsonResponse(response_data)
         except Exception as e:
             error_message = str(e)
             response_data = {'error': error_message}
             return JsonResponse(response_data, status=400)
+        
+class GetSentEmails(APIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+    pagination_class = CustomPagination
+
+    def get(self, request):
+        user = request.user
+        sentemails = Sentemails.objects.filter()  # Fetch all user activities
+        
+        # Extract pagination parameters from the query string
+        page = request.GET.get('page', None)
+        page_size = request.GET.get('page_size', None)
+        
+        # Create a paginator instance with custom pagination class
+        paginator = self.pagination_class()
+        
+        # Paginate the queryset using extracted page and page_size values
+        paginated_queryset = paginator.paginate_queryset(sentemails, request)
+        
+        serializer = SentemailsSerializer(paginated_queryset, many=True)
+        print(serializer.data)
+        return paginator.get_paginated_response(serializer.data)
