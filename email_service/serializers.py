@@ -10,5 +10,5 @@ class SentemailsSerializer(serializers.ModelSerializer):
         fields = ['id', 'subject', 'recipient_email', 'date_created', 'date_updated', 'time_ago']
 
     def get_time_ago(self, obj):
-        timestamp = obj.date_created  # You can use date_updated if you prefer
+        timestamp = obj.date_created
         return get_time_ago(timestamp)
