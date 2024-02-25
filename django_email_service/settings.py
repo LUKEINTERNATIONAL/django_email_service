@@ -32,7 +32,7 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-ALLOWED_HOSTS = ['localhost','192.168.11.92', '10.40.30.12', '0.0.0.0', '192.168.11.12']
+ALLOWED_HOSTS = ['localhost','154.66.124.45','192.168.11.92', '10.40.30.12', '0.0.0.0', '192.168.11.12', 'apps.linmalawi.org', '192.168.11.170']
 
 
 # Application definition
