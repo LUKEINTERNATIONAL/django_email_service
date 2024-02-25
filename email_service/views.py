@@ -7,6 +7,7 @@ from .models import Sentemails
 from rest_framework import authentication, permissions
 from rest_framework.pagination import PageNumberPagination
 from .serializers import SentemailsSerializer
+from django.core.mail.message import EmailMultiAlternatives
 
 class CustomPagination(PageNumberPagination):
     page_size = 10  # Number of items per page
@@ -76,3 +77,44 @@ class GetSentEmails(APIView):
         serializer = SentemailsSerializer(paginated_queryset, many=True)
         print(serializer.data)
         return paginator.get_paginated_response(serializer.data)
+    
+class EmailWithAttachmentsView(APIView):
+    def post(self, request):
+        subject = request.data.get('subject')
+        message = request.data.get('message')
+        from_email = 'tams@linmalawi.org'
+        recipient_email = request.data.get('recipient_email')
+        attachments = request.FILES.getlist('attachment_0')
+
+        if not subject or not message or not recipient_email:
+            response_data = {'error': 'Missing required data'}
+            return JsonResponse(response_data, status=400)
+
+        recipient_list = [email.strip() for email in recipient_email.split(',')]
+
+        try:
+            email = EmailMultiAlternatives(subject, message, from_email, recipient_list)
+            email.content_subtype = "html"
+
+            for attachment in attachments:
+                email.attach(attachment.name, attachment.read(), attachment.content_type)
+
+            email_template = loader.get_template('email_template.html')
+            current_year = datetime.datetime.now().year
+            email_content = email_template.render({'subject': subject, 'message': message, 'year': current_year})
+
+            email.attach_alternative(email_content, "text/html")
+            email.send()
+
+            sentemail = Sentemails()
+            sentemail.subject = subject
+            sentemail.recipient_email = recipient_email
+            sentemail.save()
+
+            response_data = {'message': 'Email sent successfully'}
+            return JsonResponse(response_data)
+        except Exception as e:
+            error_message = str(e)
+            response_data = {'error': error_message}
+            return JsonResponse(response_data, status=400)
+        
